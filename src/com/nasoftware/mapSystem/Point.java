@@ -13,6 +13,24 @@ public class Point {
        this.y = y;
    }
 
+   public Point(Point p)
+   {
+       x = p.x;
+       y = p.y;
+   }
+
+   public void copyFrom(Point p)
+   {
+       x = p.x;
+       y = p.y;
+   }
+
+   public Vec getDirection(Point p)
+   {
+       Vec vec = new Vec(p.x - x, p.y - y);
+       return vec;
+   }
+
    public String toString()
    {
        return x + "-" + y;
