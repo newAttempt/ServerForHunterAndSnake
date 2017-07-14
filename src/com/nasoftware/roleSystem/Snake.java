@@ -10,18 +10,41 @@ public class Snake extends Point {
     private Vec direction;
     private int radio;
     final int DEF_RADIO = 0;
-    public Snake()
+    String id;
+
+    private void checkID(String id)
     {
-        super(0, 0);
-        direction = new Vec(0, 0);
-        radio = DEF_RADIO;
+        String[] temp = id.split("-");
+        if(temp.length != 2)
+        {
+            System.err.print("wrong format of hunter id!");
+            System.exit(-1);
+        }
+        try {
+            int number = Integer.parseInt(temp[0]);
+        } catch (NumberFormatException e)
+        {
+            System.out.print("hunter id should contains all integers!");
+            System.exit(-1);
+        }
     }
 
-    public Snake(Point position, Vec direction)
+    public Snake(String id)
+    {
+        super(0, 0);
+        checkID(id);
+        direction = new Vec(0, 0);
+        radio = DEF_RADIO;
+        this.id = id;
+    }
+
+    public Snake(Point position, Vec direction, String id)
     {
         super(position.getX(), position.getY());
+        checkID(id);
         this.direction = new Vec(direction.getX(), direction.getY());
         radio = DEF_RADIO;
+        this.id = id;
     }
 
     public void setRadio(int radio)
@@ -44,4 +67,25 @@ public class Snake extends Point {
         return direction;
     }
 
+    public boolean equals(Object o)
+    {
+        System.out.print("asdfasgdfgdsfg");
+        Snake temp = (Snake) o;
+        if(temp.id.equals(this.id))
+            return true;
+        return false;
+    }
+
+    public boolean matchRoomNo(String roomNo)
+    {
+        String[] temp = this.id.split("-");
+        if(!temp[0].equals(roomNo))
+            return false;
+        return true;
+    }
+
+    public String getId()
+    {
+        return id;
+    }
 }

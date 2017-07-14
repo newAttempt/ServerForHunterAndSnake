@@ -13,18 +13,18 @@ class HunterTest {
     @Test
     void HunterCreateTest()
     {
-        Hunter hunter = new Hunter();
+        Hunter hunter = new Hunter("1-1");
         assertEquals(0, hunter.getX());
         assertEquals(0, hunter.getY());
         Vec direction = new Vec(0, 0);
         assertEquals("0.0-0.0", direction.toString());
         assertEquals("0.0-0.0", hunter.getDirection().toString());
 
-        Hunter hunter1 = new Hunter(new Point(1, 2));
+        Hunter hunter1 = new Hunter(new Point(1, 2), "1-1");
         assertEquals("1.0-2.0", hunter1.toString());
         assertEquals(direction.toString(), hunter1.getDirection().toString());
 
-        Hunter hunter2 = new Hunter(new Point(1, 2), new Vec(2, 3));
+        Hunter hunter2 = new Hunter(new Point(1, 2), new Vec(2, 3), "1-1");
         assertEquals("1.0-2.0", hunter2.toString());
         assertEquals("2.0-3.0", hunter2.getDirection().toString());
 
@@ -33,7 +33,7 @@ class HunterTest {
     @Test
     void addLevelAndMinLevelTest()
     {
-        Hunter hunter = new Hunter();
+        Hunter hunter = new Hunter("1-1");
         assertEquals(1, hunter.getLevel());
         hunter.addLevel();
         assertEquals(2, hunter.getLevel());
@@ -59,5 +59,13 @@ class HunterTest {
         assertEquals(1, hunter.getLevel());
         hunter.minLevel();
         assertEquals(1, hunter.getLevel());
+    }
+
+    @Test
+    void idEqualsTest()
+    {
+        Hunter hunter = new Hunter("1-1");
+        Hunter hunter1 = new Hunter("1-1");
+        assertEquals(hunter, hunter1);
     }
 }
