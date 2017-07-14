@@ -11,7 +11,7 @@ class VecTest {
     public void toStringTest()
     {
         Vec vector = new Vec(10, 5);
-        assertEquals("10.0-5.0", vector.toString());
+        assertEquals("1.0-0.5", vector.toString());
     }
 
     @Test

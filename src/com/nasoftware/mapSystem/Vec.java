@@ -9,8 +9,10 @@ public class Vec {
     private double y;
 
     public Vec(double x, double y) {
-        this.x = x;
-        this.y = y;
+        int bit = 0;
+        bit = Math.max((int)x/10, (int)y/10);
+        this.x = x/Math.pow(10, bit);
+        this.y = y/Math.pow(10, bit);
     }
 
     public String toString() {
