@@ -32,4 +32,14 @@ public class Vec {
         result.addXY(moveDistanceRate * x, moveDistanceRate * y);
         return result;
     }
+
+    public double getX()
+    {
+        return x;
+    }
+
+    public double getY()
+    {
+        return y;
+    }
 }
