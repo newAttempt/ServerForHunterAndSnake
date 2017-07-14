@@ -46,4 +46,20 @@ public class Point {
        this.x += x;
        this.y += y;
    }
+
+   public void add(Vec dir)
+   {
+       this.x += dir.getX();
+       this.y += dir.getY();
+   }
+
+   public double getX()
+   {
+       return x;
+   }
+
+   public double getY()
+   {
+       return y;
+   }
 }
