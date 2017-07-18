@@ -17,14 +17,14 @@ public class Snake extends Point {
         String[] temp = id.split("-");
         if(temp.length != 2)
         {
-            System.err.print("wrong format of hunter id!");
+            System.err.print("wrong format of snake id!");
             System.exit(-1);
         }
         try {
             int number = Integer.parseInt(temp[0]);
         } catch (NumberFormatException e)
         {
-            System.out.print("hunter id should contains all integers!");
+            System.out.print("snake id should contains all integers!");
             System.exit(-1);
         }
     }
@@ -69,7 +69,6 @@ public class Snake extends Point {
 
     public boolean equals(Object o)
     {
-        System.out.print("asdfasgdfgdsfg");
         Snake temp = (Snake) o;
         if(temp.id.equals(this.id))
             return true;
@@ -79,6 +78,8 @@ public class Snake extends Point {
     public boolean matchRoomNo(String roomNo)
     {
         String[] temp = this.id.split("-");
+        if(temp.length != 2)
+            return false;
         if(!temp[0].equals(roomNo))
             return false;
         return true;
