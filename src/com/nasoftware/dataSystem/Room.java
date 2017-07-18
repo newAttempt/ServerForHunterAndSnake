@@ -85,22 +85,88 @@ public class Room {
 
     public int balanceFactor()
     {
+        lock.lock();
+        int result = -2;
         if(hunterList.size() > snakeList.size())
-            return 1;
+            result = 1;
         else if(hunterList.size() == snakeList.size())
-            return 0;
+            result = 0;
         else
-            return -1;
+            result = -1;
+        lock.unlock();
+        return result;
+    }
+
+    public String getNewSnakeID()
+    {
+        lock.lock();
+        if(snakeList.size() >= MAX_SIZE)
+        {
+            lock.unlock();
+            return null;
+        }
+        Integer temp = snakeList.size();
+        String result = id + "-0" + temp.toString();
+        lock.unlock();
+        return result;
+    }
+
+    public String getNewHunterID()
+    {
+        lock.lock();
+        if(hunterList.size() >= MAX_SIZE)
+        {
+            lock.unlock();
+            return null;
+        }
+        Integer temp = hunterList.size();
+        String result = id + "-1" + temp.toString();
+        lock.unlock();
+        return result;
+    }
+
+    public Hunter getHunterFromID(String id)
+    {
+        lock.lock();
+        Hunter hunterForMatching = new Hunter(id);
+        for(Hunter x: hunterList)
+            if(x.equals(hunterForMatching))
+            {
+                lock.unlock();
+                return x;
+            }
+        lock.unlock();
+        return null;
+    }
+
+    public Snake getSnakeFromID(String id)
+    {
+        lock.lock();
+        Snake snakeForMatching = new Snake(id);
+        for(Snake x: snakeList)
+            if(x.equals(snakeForMatching))
+            {
+                lock.unlock();
+                return x;
+            }
+        lock.unlock();
+        return null;
     }
 
     public ArrayList<Hunter> getHunterList()
     {
-        return hunterList;
+        lock.lock();
+        final ArrayList<Hunter> result = new ArrayList<Hunter>(hunterList);
+        lock.unlock();
+        return result;
     }
 
     public ArrayList<Snake> getSnakeList()
     {
-        return snakeList;
+        lock.lock();
+        final ArrayList<Snake> result = new ArrayList<Snake>(snakeList);
+        lock.unlock();
+        return result;
     }
 
     public boolean equals(Object o)
@@ -109,5 +175,15 @@ public class Room {
         if(room != null && room.id.equals(this.id))
             return true;
         return false;
+    }
+
+    public String getRoomID()
+    {
+        return id;
+    }
+
+    public int getMAX_SIZE()
+    {
+        return MAX_SIZE;
     }
 }

@@ -11,46 +11,45 @@ import static org.junit.jupiter.api.Assertions.*;
  * Created by zeyongshan on 7/14/17.
  */
 class RoomTest {
-    @Test
-    void roomCreateTest()
-    {
-        Room room = new Room("1");
-        assertEquals(0, room.getHunterList().size());
-    }
+    private Room room;
+    RoomTest()
+   {
+       room = new Room("1");
+       assertEquals("1", room.getRoomID());
+   }
 
-    @Test
-    void roomAddHunterTest()
-    {
-        Room room = new Room("1");
-        Hunter hunter = new Hunter("1-2");
-        boolean result = room.addHunter(hunter);
-        assertEquals(true, result);
-        assertEquals(true, room.getHunterList().contains(hunter));
-        hunter = new Hunter("2-2");
-        result = room.addHunter(hunter);
-        assertEquals(false, result);
-        assertEquals(false, room.getHunterList().contains(hunter));
-        for(int i = 3; i<=9; ++i)
-        {
-            hunter = new Hunter("1-" + i);
-            result = room.addHunter(hunter);
-            assertEquals(true, result);
-            assertEquals(true, room.getHunterList().contains(hunter));
-        }
-        hunter = new Hunter("1-" + 10);
-        result = room.addHunter(hunter);
-        assertEquals(false, result);
-        assertEquals(false, room.getHunterList().contains(hunter));
-        hunter = new Hunter("1-8");
-        result = room.addHunter(hunter);
-        assertEquals(false, result);
-        assertEquals(true, room.getHunterList().contains(hunter));
+   @Test
+    public void AddHunterSnakeTest()
+   {
 
-        Snake snake = new Snake("1-2");
-        result = room.addSnake(snake);
-        assertEquals(false, result);
-        snake = new Snake("1-11");
-        result = room.addSnake(snake);
-        assertEquals(true, result);
-    }
+       for(int i=0; i<8; ++i)
+       {
+           String id = room.getNewHunterID();
+           assertEquals("1-1" + i, id);
+           Hunter hunter = new Hunter(id);
+           room.addHunter(hunter);
+           assertEquals(hunter, room.getHunterFromID(id));
+           assertEquals(i + 1, room.getHunterList().size());
+       }
+       String id = room.getNewHunterID();
+       assertEquals(null, id);
+
+        for(int i=0; i<8; ++i)
+       {
+           String sid = room.getNewSnakeID();
+           assertEquals("1-0" + i, sid);
+           Snake snake = new Snake(sid);
+           room.addSnake(snake);
+           assertEquals(snake, room.getSnakeFromID(sid));
+           assertEquals(i + 1, room.getSnakeList().size());
+       }
+       String sid = room.getNewSnakeID();
+       assertEquals(null, id);
+
+       boolean result = room.bestToStart();
+       assertEquals(true, result);
+       result = room.canStart();
+       assertEquals(true, result);
+   }
 }
+
