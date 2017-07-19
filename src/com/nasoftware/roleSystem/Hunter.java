@@ -111,5 +111,10 @@ public class Hunter extends Point {
     {
         return "id: " + id + " " + super.toString() + " ";
     }
+
+    public String getInfo()
+    {
+        return id + "-" + level + "-" + super.toString();
+    }
 }
 

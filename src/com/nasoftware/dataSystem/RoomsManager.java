@@ -3,6 +3,7 @@ package com.nasoftware.dataSystem;
 import com.nasoftware.roleSystem.Hunter;
 import com.nasoftware.roleSystem.Snake;
 
+import java.util.ArrayList;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -73,14 +74,39 @@ public class RoomsManager {
         String[] temp = id.split("-");
         if(temp.length != 2)
             System.exit(-2);
-        String roomID       = temp[0];
+        String roomID = temp[0];
         lock.lock();
         Room room = roomList.getRoomFromID(roomID);
-        if(!room.getGameStatus())
+        if(!room.getGameStatus()) {
+            lock.unlock();
             return -1;
-        if(room.updatePosition(id, x, y))
+        }
+        if(room.updatePosition(id, x, y)) {
+            lock.unlock();
             return 1;
+        }
+        lock.unlock();
         return 0;
+    }
+
+    public ArrayList<String> getRoomRolesInfo(String id)
+    {
+        String[] temp = id.split("-");
+        if(temp.length != 2)
+            System.exit(-2);
+        String roomID = temp[0];
+        lock.lock();
+        Room room = roomList.getRoomFromID(roomID);
+        ArrayList<String> result = new ArrayList<String>(room.getMAX_SIZE()*2 + 1);
+        if(room == null || !room.getGameStatus()) {
+            result.add("0");
+            lock.unlock();
+            return result;
+        }
+        result.add("1");
+        result.addAll(room.getRolesInfo());
+        lock.unlock();
+        return result;
     }
 
     /**
@@ -92,3 +118,10 @@ public class RoomsManager {
         return roomList;
     }
 }
+
+
+
+
+
+
+
