@@ -1,5 +1,6 @@
 package com.nasoftware.dataSystem;
 
+import com.nasoftware.Interfaces.*;
 import com.nasoftware.roleSystem.Hunter;
 import com.nasoftware.roleSystem.Snake;
 
@@ -12,14 +13,23 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public class RoomsManager {
     private RoomList roomList;
-    Lock lock;
+    private ArrayList<EventHandlerVoid> handlers;
+    private Lock lock;
+
+    private void cleanTheHandlersAndReset()
+    {
+        for(EventHandlerVoid x: handlers)
+            x.completionHandler();
+        handlers.clear();
+    }
 
     public RoomsManager(){
         roomList = new RoomList();
         lock = new ReentrantLock(true);
+        handlers = new ArrayList<EventHandlerVoid>(20);
     }
 
-    public String assignNewRole()
+    public String assignNewRole(EventHandlerVoid startHandler)
     {
         lock.lock();
         String key = roomList.getUnstartedUnfullRoomKey();
@@ -29,17 +39,23 @@ public class RoomsManager {
         switch (room.balanceFactor())
         {
             case -1:case 0:
+                handlers.add(startHandler);
                 Hunter hunter = new Hunter(room.getNewHunterID());
                 room.addHunter(hunter);
-                if(room.canStart())
+                if(room.canStart()){
+                    cleanTheHandlersAndReset();
                     room.startGame();
+                }
                 lock.unlock();
                 return hunter.getId();
             case 1:
+                handlers.add(startHandler);
                 Snake snake = new Snake(room.getNewSnakeID());
                 room.addSnake(snake);
-                if(room.canStart())
+                if(room.canStart()) {
+                    cleanTheHandlersAndReset();
                     room.startGame();
+                }
                 lock.unlock();
                 return snake.getId();
             default:
