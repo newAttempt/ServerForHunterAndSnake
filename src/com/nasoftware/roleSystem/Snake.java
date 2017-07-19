@@ -9,7 +9,7 @@ import com.nasoftware.mapSystem.Vec;
 public class Snake extends Point {
     private Vec direction;
     private int radio;
-    final int DEF_RADIO = 0;
+    final int DEF_RADIO = 1;
     String id;
 
     private void checkID(String id)
