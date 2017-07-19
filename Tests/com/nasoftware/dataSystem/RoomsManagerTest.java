@@ -3,6 +3,8 @@ package com.nasoftware.dataSystem;
 import com.nasoftware.roleSystem.Hunter;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -100,6 +102,39 @@ class RoomsManagerTest {
         result = roomsManager.updatePosition(hunter.getId(), 10, 10);
         assertEquals(-1, result);
     }
+
+    @Test
+    public void getRoomRolesInfoTest()
+    {
+        assignNewRoleTest();
+        ArrayList<String> expectedArray = new ArrayList<String>();
+        expectedArray.add("1");
+        expectedArray.add("0-10-1-0.0-0.0");
+        expectedArray.add("0-11-1-0.0-0.0");
+        expectedArray.add("0-12-1-0.0-0.0");
+        expectedArray.add("0-13-1-0.0-0.0");
+        expectedArray.add("0-14-1-0.0-0.0");
+        expectedArray.add("0-15-1-0.0-0.0");
+        expectedArray.add("0-16-1-0.0-0.0");
+        expectedArray.add("0-17-1-0.0-0.0");
+        expectedArray.add("0-18-1-0.0-0.0");
+        expectedArray.add("0-19-1-0.0-0.0");
+        expectedArray.add("0-00-0-0.0-0.0");
+        expectedArray.add("0-01-0-0.0-0.0");
+        expectedArray.add("0-02-0-0.0-0.0");
+        expectedArray.add("0-03-0-0.0-0.0");
+        expectedArray.add("0-04-0-0.0-0.0");
+        expectedArray.add("0-05-0-0.0-0.0");
+        expectedArray.add("0-06-0-0.0-0.0");
+        expectedArray.add("0-07-0-0.0-0.0");
+        expectedArray.add("0-08-0-0.0-0.0");
+        expectedArray.add("0-09-0-0.0-0.0");
+        assertEquals(expectedArray, roomsManager.getRoomRolesInfo("0-00"));
+        expectedArray = new ArrayList<String>();
+        expectedArray.add("0");
+        assertEquals(expectedArray, roomsManager.getRoomRolesInfo("1-00"));
+    }
+
 }
 
 

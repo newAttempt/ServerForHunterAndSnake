@@ -22,8 +22,8 @@ public class Room {
     public int timeTicks;
 
     public Room(String id) {
-        hunterList = new ArrayList<Hunter>(10);
-        snakeList = new ArrayList<Snake>(10);
+        hunterList = new ArrayList<Hunter>(MAX_SIZE);
+        snakeList = new ArrayList<Snake>(MAX_SIZE);
         lock = new ReentrantLock(true);
         this.id = id;
         gaming = false;
@@ -264,5 +264,17 @@ public class Room {
             }
             return false;
         }
+    }
+
+    public ArrayList<String> getRolesInfo()
+    {
+        ArrayList<String> result = new ArrayList<String>(MAX_SIZE*2);
+        lock.lock();
+        for (Hunter x : hunterList)
+            result.add(x.getInfo());
+        for (Snake x  : snakeList)
+            result.add(x.getInfo());
+        lock.unlock();
+        return result;
     }
 }

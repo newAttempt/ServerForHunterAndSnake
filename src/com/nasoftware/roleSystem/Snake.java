@@ -94,4 +94,10 @@ public class Snake extends Point {
     {
         return "id: " + id + " " + super.toString() + " ";
     }
+
+    public String getInfo()
+    {
+        //id-R-x-y
+        return id + "-" + radio + "-" + super.toString();
+    }
 }
