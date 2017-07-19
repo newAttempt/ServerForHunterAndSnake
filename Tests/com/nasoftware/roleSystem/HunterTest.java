@@ -21,11 +21,11 @@ class HunterTest {
         assertEquals("0.0-0.0", hunter.getDirection().toString());
 
         Hunter hunter1 = new Hunter(new Point(1, 2), "1-1");
-        assertEquals("1.0-2.0", hunter1.toString());
+        assertEquals("id: 1-1 1.0-2.0 ", hunter1.toString());
         assertEquals(direction.toString(), hunter1.getDirection().toString());
 
         Hunter hunter2 = new Hunter(new Point(1, 2), new Vec(2, 3), "1-1");
-        assertEquals("1.0-2.0", hunter2.toString());
+        assertEquals("id: 1-1 1.0-2.0 ", hunter2.toString());
         assertEquals("2.0-3.0", hunter2.getDirection().toString());
 
     }

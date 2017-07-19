@@ -14,10 +14,10 @@ class SnakeTest {
     void snakeCreateTest()
     {
         Snake snake = new Snake(new Point(0, 0), new Vec(1, 2), "1-1");
-        assertEquals("0.0-0.0", snake.toString());
+        assertEquals("id: 1-1 0.0-0.0 ", snake.toString());
         assertEquals("1.0-2.0", snake.getDirection().toString());
         Snake snake1 = new Snake("1-1");
-        assertEquals("0.0-0.0", snake.toString());
+        assertEquals("id: 1-1 0.0-0.0 ", snake.toString());
         assertEquals("1.0-2.0", snake.getDirection().toString());
     }
 }

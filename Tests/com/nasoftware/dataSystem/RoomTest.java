@@ -22,7 +22,7 @@ class RoomTest {
     public void AddHunterSnakeTest()
    {
 
-       for(int i=0; i<8; ++i)
+       for(int i=0; i<room.getMAX_SIZE(); ++i)
        {
            String id = room.getNewHunterID();
            assertEquals("1-1" + i, id);
@@ -34,7 +34,7 @@ class RoomTest {
        String id = room.getNewHunterID();
        assertEquals(null, id);
 
-        for(int i=0; i<8; ++i)
+        for(int i=0; i<room.getMAX_SIZE(); ++i)
        {
            String sid = room.getNewSnakeID();
            assertEquals("1-0" + i, sid);

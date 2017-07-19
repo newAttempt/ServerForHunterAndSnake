@@ -20,10 +20,10 @@ class RoomListTest {
     @Test
     public void addRoomTest()
     {
-        int result = roomList.addNewRoom();
-        assertEquals(0, result);
+        String result = roomList.addNewRoom();
+        assertEquals("0", result);
         result = roomList.addNewRoom();
-        assertEquals(1, result);
+        assertEquals("1", result);
         Room temp = roomList.getRoomFromID(new Integer(result).toString());
         Room roomForMatching = new Room("1");
         assertEquals(roomForMatching, temp);
@@ -32,8 +32,8 @@ class RoomListTest {
     @Test
     public void addHunterAndSnakeToRoomTest()
     {
-        int result = roomList.addNewRoom();
-        assertEquals(0, result);
+        String result = roomList.addNewRoom();
+        assertEquals("0", result);
         Hunter hunter = new Hunter(result + "-10");
         boolean comple = roomList.addHunterToRoom(new Integer(result).toString(), hunter);
         assertEquals(true, comple);
