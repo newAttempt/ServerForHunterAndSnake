@@ -89,4 +89,9 @@ public class Snake extends Point {
     {
         return id;
     }
+
+    public String toString()
+    {
+        return "id: " + id + " " + super.toString() + " ";
+    }
 }

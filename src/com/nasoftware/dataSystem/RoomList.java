@@ -1,9 +1,12 @@
 package com.nasoftware.dataSystem;
 
+import com.nasoftware.mapSystem.Point;
 import com.nasoftware.roleSystem.Hunter;
 import com.nasoftware.roleSystem.Snake;
 
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -12,25 +15,23 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public class RoomList {
     private HashMap<String, Room> roomMap;
-    private int mapSize;
     private Lock lock;
 
     public RoomList()
     {
         roomMap = new HashMap<String, Room>();
-        mapSize = 0;
         lock = new ReentrantLock(true);
     }
 
-    public int addNewRoom()
+    public String addNewRoom()
     {
         lock.lock();
-        Integer size = new Integer(mapSize);
+        Integer size = new Integer(roomMap.size());
         Room room = new Room(size.toString());
         roomMap.put(size.toString(), room);
-        ++mapSize;
+        String result = Integer.toString(roomMap.size() -1);
         lock.unlock();
-        return size;
+        return result;
     }
 
     public Room getRoomFromID(String roomID)
@@ -84,4 +85,36 @@ public class RoomList {
         lock.unlock();
         return result;
     }
+
+    public String getUnstartedUnfullRoomKey()
+    {
+        lock.lock();
+        Iterator it = roomMap.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry pair = (Map.Entry)it.next();
+            String key = (String) pair.getKey();
+            if(roomMap.containsKey(key) && !roomMap.get(key).getGameStatus()&& !roomMap.get(key).canStart())
+            {
+                lock.unlock();
+                return key;
+            }
+        }
+        lock.unlock();
+        return null;
+    }
+
+    public String toString()
+    {
+        lock.lock();
+        Iterator it = roomMap.entrySet().iterator();
+        String result = "";
+        while (it.hasNext()) {
+            Map.Entry pair = (Map.Entry)it.next();
+            String key = (String) pair.getKey();
+            result += roomMap.get(key).toString() + "\n";
+        }
+        lock.unlock();
+        return result;
+    }
+
 }
