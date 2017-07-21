@@ -35,9 +35,7 @@ public class ServerManager extends Thread
             try
             {
                 Socket server = serverSocket.accept();
-                Distributor distributor = new Distributor(server);
                 Executer    executer    = new Executer(server);
-                distributor.start();
                 executer.start();
                 System.err.println("port " + serverSocket.getLocalPort() + "just connected!!!!!");
             } catch (SocketTimeoutException e)

@@ -15,7 +15,7 @@ public class Executer extends Thread {
 
     private Socket server;
     private String roomID;
-    final   int    INST_NUM = 2;
+    final   int    INST_NUM = 3;
     private int    instructionMap[];
 
     public Executer(Socket server)
@@ -24,6 +24,7 @@ public class Executer extends Thread {
         instructionMap      = new int[INST_NUM];
         instructionMap[0]   = 0 + 1;
         instructionMap[1]   = 3 + 1;
+        instructionMap[2]   = 1 + 1;
     }
 
     public void run()
@@ -50,10 +51,20 @@ public class Executer extends Thread {
             if(instruction.equals(""))
                 return;
             String temp[] = instruction.split(" ");
-            if(temp.length != instructionMap[Integer.parseInt(temp[0])] || temp[0].length() != 1) {
+            try {
+                if(Integer.parseInt(temp[0]) > INST_NUM) {
+                    out.writeUTF("0");
+                    return;
+                }
+                if(temp.length != instructionMap[Integer.parseInt(temp[0])] || temp[0].length() != 1) {
+                    out.writeUTF("0");
+                    return;
+                }
+            } catch (NumberFormatException e) {
                 out.writeUTF("0");
                 return;
             }
+
             switch (temp[0].toCharArray()[0])
             {
                 case '0': {
@@ -91,6 +102,12 @@ public class Executer extends Thread {
                         return;
                     }
                 }
+                case '2': {
+                    String userID = temp[1];
+                    Distributor distributor = new Distributor(server, userID);
+                    distributor.start();
+                    break;
+                }
                 default: out.writeUTF("0");
             }
         } catch (IOException e) {
@@ -104,14 +121,17 @@ public class Executer extends Thread {
 command explanation:
 command-argNumbers
 0:  getPositionFromRoom
-0-0
+0 0
 return ID;
 
 
 1:  updatePosition
-1-3
+1 3
 instruction arg1 arg2 arg3
 return 1|-1
+
+2:  setUserID
+2 1
 
 return code:
 "0"         wrong instruction format
