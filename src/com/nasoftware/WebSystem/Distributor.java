@@ -5,6 +5,7 @@ import sun.text.normalizer.Trie;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.Socket;
 
 /**
@@ -28,11 +29,11 @@ public class Distributor extends Thread {
         while (true)
         {
             try {
-                DataOutputStream out = new DataOutputStream(server.getOutputStream());
+                OutputStream out = server.getOutputStream();
                 while (server.isConnected()) {
                     String info = DataMnager.getInfoOfCurrentRoom(userID);
                     if(info!=null)
-                        out.writeUTF(info);
+                        out.write(info.getBytes("UTF-8"));
                     sleep(10);
                 }
             } catch (IOException e){

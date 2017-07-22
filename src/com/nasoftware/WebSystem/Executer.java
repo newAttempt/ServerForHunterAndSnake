@@ -3,10 +3,9 @@ package com.nasoftware.WebSystem;
 import com.nasoftware.Interfaces.DataMnager;
 import com.nasoftware.Interfaces.EventHandlerVoid;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
+import java.net.SocketException;
 
 /**
  * Created by zeyongshan on 7/17/17.
@@ -33,8 +32,16 @@ public class Executer extends Thread {
         {
             try
             {
-                DataInputStream in = new DataInputStream(server.getInputStream());
-                String instruction = in.readUTF();
+                InputStream in = server.getInputStream();
+                int len = in.available();
+                byte[] buff = new byte[len];
+                try {
+                    int flag = in.read(buff);
+                    if(flag == -1) {
+                        break;
+                    }
+                } catch (SocketException e) {}
+                String instruction = new String(buff);
                 parseInstructions(instruction);
             } catch (IOException e) {
                 System.err.println("no input stream!");
@@ -47,21 +54,21 @@ public class Executer extends Thread {
     private void parseInstructions(String instruction)
     {
         try{
-            DataOutputStream out = new DataOutputStream(server.getOutputStream());
+            OutputStream out = server.getOutputStream();
             if(instruction.equals(""))
                 return;
             String temp[] = instruction.split(" ");
             try {
                 if(Integer.parseInt(temp[0]) > INST_NUM) {
-                    out.writeUTF("0");
+                    out.write(new String("0").getBytes("UTF-8"));
                     return;
                 }
                 if(temp.length != instructionMap[Integer.parseInt(temp[0])] || temp[0].length() != 1) {
-                    out.writeUTF("0");
+                    out.write(new String("0").getBytes("UTF-8"));
                     return;
                 }
             } catch (NumberFormatException e) {
-                out.writeUTF("0");
+                out.write(new String("0").getBytes("UTF-8"));
                 return;
             }
 
@@ -70,19 +77,19 @@ public class Executer extends Thread {
                 case '0': {
                     EventHandlerVoid handler = () -> {
                         try {
-                            out.writeUTF("s");
+                            out.write(new String("s").getBytes("UTF-8"));
                         }catch (IOException e) {
                             System.err.println("fail to generate the dataOutputStream!");
                             return;
                         }
                     };
                     String id = DataMnager.setNewRole(handler);
-                    out.writeUTF(id);
+                    out.write(id.getBytes("UTF-8"));
                     return;
                 }
                 case '1': {
                     if (temp[1].split("-").length != 2)
-                        out.writeUTF("0");
+                        out.write(new String("0").getBytes("UTF-8"));
                     try {
                         String parts[] = temp[1].split("-");
                         Integer.parseInt(parts[0]);
@@ -92,13 +99,13 @@ public class Executer extends Thread {
                         Double y    = Double.parseDouble(temp[3]);
                         int result  = DataMnager.updatePosition(id, x, y);
                         if(result == 1) {
-                            out.writeUTF("1");
+                            out.write(new String("1").getBytes("UTF-8"));
                             return;
                         }
-                        out.writeUTF("-1");
+                        out.write(new String("-1").getBytes("UTF-8"));
                         return;
                     } catch (NumberFormatException e) {
-                        out.writeUTF("0");
+                        out.write(new String("0").getBytes("UTF-8"));
                         return;
                     }
                 }
@@ -108,7 +115,8 @@ public class Executer extends Thread {
                     distributor.start();
                     break;
                 }
-                default: out.writeUTF("0");
+                default:
+                    out.write(new String("0").getBytes("UTF-8"));
             }
         } catch (IOException e) {
             System.err.println("fail to generate the dataOutputStream!");
