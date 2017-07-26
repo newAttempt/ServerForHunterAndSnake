@@ -31,10 +31,10 @@ public class Distributor extends Thread {
             try {
                 OutputStream out = server.getOutputStream();
                 while (server.isConnected()) {
-                    String info = DataMnager.getInfoOfCurrentRoom(userID);
+                    String info ="2 " + DataMnager.getInfoOfCurrentRoom(userID);
                     if(info!=null)
                         out.write(info.getBytes("UTF-8"));
-                    sleep(10);
+                    sleep(30);
                 }
             } catch (IOException e){
                 System.err.println("cannot create output stream!");

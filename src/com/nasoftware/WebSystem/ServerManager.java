@@ -40,7 +40,7 @@ public class ServerManager extends Thread
                 System.err.println("port " + serverSocket.getLocalPort() + "just connected!!!!!");
             } catch (SocketTimeoutException e)
             {
-                System.err.println("port " + serverSocket.getLocalPort() + "time out!");
+                //System.err.println("port " + serverSocket.getLocalPort() + "time out!");
             } catch (IOException e)
             {
                 e.printStackTrace();

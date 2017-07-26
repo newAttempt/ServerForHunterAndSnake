@@ -42,7 +42,17 @@ public class Executer extends Thread {
                     }
                 } catch (SocketException e) {}
                 String instruction = new String(buff);
-                parseInstructions(instruction);
+                if(instruction.equals(""))
+                    continue;
+                System.out.println(instruction);
+                String temp[] = instruction.split("x");
+                for(String x : temp)
+                {
+                    if(x.equals("") || x.equals("x"))
+                        continue;
+                    System.out.println(x);
+                    parseInstructions(x);
+                }
             } catch (IOException e) {
                 System.err.println("no input stream!");
                 break;
@@ -77,19 +87,19 @@ public class Executer extends Thread {
                 case '0': {
                     EventHandlerVoid handler = () -> {
                         try {
-                            out.write(new String("s").getBytes("UTF-8"));
+                            out.write(new String("0 s").getBytes("UTF-8"));
                         }catch (IOException e) {
                             System.err.println("fail to generate the dataOutputStream!");
                             return;
                         }
                     };
-                    String id = DataMnager.setNewRole(handler);
+                    String id ="0 " + DataMnager.setNewRole(handler);
                     out.write(id.getBytes("UTF-8"));
                     return;
                 }
                 case '1': {
                     if (temp[1].split("-").length != 2)
-                        out.write(new String("0").getBytes("UTF-8"));
+                        out.write(new String("1 0").getBytes("UTF-8"));
                     try {
                         String parts[] = temp[1].split("-");
                         Integer.parseInt(parts[0]);
@@ -99,13 +109,13 @@ public class Executer extends Thread {
                         Double y    = Double.parseDouble(temp[3]);
                         int result  = DataMnager.updatePosition(id, x, y);
                         if(result == 1) {
-                            out.write(new String("1").getBytes("UTF-8"));
+                            out.write(new String("1 1").getBytes("UTF-8"));
                             return;
                         }
-                        out.write(new String("-1").getBytes("UTF-8"));
+                        out.write(new String("1 -1").getBytes("UTF-8"));
                         return;
                     } catch (NumberFormatException e) {
-                        out.write(new String("0").getBytes("UTF-8"));
+                        out.write(new String("1 0").getBytes("UTF-8"));
                         return;
                     }
                 }
@@ -116,7 +126,7 @@ public class Executer extends Thread {
                     break;
                 }
                 default:
-                    out.write(new String("0").getBytes("UTF-8"));
+                    out.write(new String("2 0").getBytes("UTF-8"));
             }
         } catch (IOException e) {
             System.err.println("fail to generate the dataOutputStream!");
